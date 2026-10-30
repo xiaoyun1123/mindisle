@@ -1,0 +1,195 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  color-scheme: light;
+
+  --bg: #f3f4ef;
+  --bg-elev: #fafaf7;
+  --surface: #ffffff;
+  --surface-2: #f7f8f3;
+  --ink: #14181a;
+  --ink-2: #4b544f;
+  --ink-3: #6b746e;
+  --line: #dee1d9;
+  --line-strong: #c6ccc2;
+  --accent: #2e5a4c;
+  --accent-hover: #24483c;
+  --accent-soft: #dfeae2;
+  --accent-ink: #1b3a30;
+  --danger: #a6413c;
+  --shadow-soft: 0 1px 2px rgb(20 24 26 / 0.04), 0 14px 40px -18px rgb(20 24 26 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(20 24 26 / 0.05), 0 28px 60px -24px rgb(20 24 26 / 0.28);
+
+  --e-joy: #c08a2e;
+  --e-calm: #4e8a6b;
+  --e-hope: #a9762f;
+  --e-anxiety: #5b7591;
+  --e-sadness: #4f6e9e;
+  --e-anger: #a85b4b;
+  --e-tired: #828873;
+  --e-lonely: #87779f;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #0e1312;
+  --bg-elev: #141a18;
+  --surface: #161d1a;
+  --surface-2: #1a2220;
+  --ink: #eaf0e9;
+  --ink-2: #a8b2ab;
+  --ink-3: #79847d;
+  --line: #26302c;
+  --line-strong: #36423c;
+  --accent: #8fc4ae;
+  --accent-hover: #a8d4c1;
+  --accent-soft: #1c2b25;
+  --accent-ink: #d3ebe0;
+  --danger: #d98a83;
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 14px 40px -18px rgb(0 0 0 / 0.6);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.4), 0 28px 60px -24px rgb(0 0 0 / 0.7);
+
+  --e-joy: #d8a64b;
+  --e-calm: #6fb08d;
+  --e-hope: #c99446;
+  --e-anxiety: #7d9ab8;
+  --e-sadness: #7290c2;
+  --e-anger: #c67a69;
+  --e-tired: #a0a68f;
+  --e-lonely: #a595bd;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elev: var(--bg-elev);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink-2);
+  --color-ink3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line2: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-danger: var(--danger);
+
+  --font-sans: 'Geist Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Noto Sans SC', system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #f7faf7;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .balance {
+    text-wrap: balance;
+  }
+
+  .pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* 颗粒质感只作用在固定层，避免滚动容器持续重绘 */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.72);
+    opacity: 0.55;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-breathe {
+  animation: breathe 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.animate-ripple {
+  animation: ripple 2.8s ease-out infinite;
+}
