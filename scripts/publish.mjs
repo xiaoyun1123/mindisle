@@ -64,10 +64,10 @@ async function bootstrapMain() {
   return created.commit.sha
 }
 
-async function push(branch, paths, message, extra = []) {
+async function push(branch, paths, message, extra = [], base = '.') {
   const items = []
   for (const path of paths) {
-    const content = await readFile(path)
+    const content = await readFile(join(base, path))
     const blob = await call('/git/blobs', {
       method: 'POST',
       body: JSON.stringify({ content: content.toString('base64'), encoding: 'base64' }),
@@ -109,8 +109,14 @@ if (mode === 'source') {
   await push('main', await walk('.', '.'), `source: ${stamp}${tail}`)
 } else {
   // .nojekyll 关掉 Jekyll，防止以后产物里出现 _ 开头目录被吞
-  await push('gh-pages', await walk('dist', 'dist'), `deploy: ${stamp}${tail}`, [
-    { path: '.nojekyll', content: '' },
-    { path: 'BUILD.txt', content: new Date().toISOString() },
-  ])
+  await push(
+    'gh-pages',
+    await walk('dist', 'dist'),
+    `deploy: ${stamp}${tail}`,
+    [
+      { path: '.nojekyll', content: '' },
+      { path: 'BUILD.txt', content: new Date().toISOString() },
+    ],
+    'dist',
+  )
 }
